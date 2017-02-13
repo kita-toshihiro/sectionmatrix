@@ -30,7 +30,7 @@ $string['sectionmatrix:addinstance'] = 'Add a new sectionmatrix';
 $string['sectionmatrix:managefiles'] = 'Manage files in sectionmatrix module';
 $string['sectionmatrix:view'] = 'View sectionmatrix content';
 //$string['sectionmatrixcontent'] = 'Files and subfolders';
-$string['modulename'] = 'Section Matrix';
+$string['modulename'] = 'SectionMatrix';
 
 $string['modulename_help'] = 'Please write MODULE HELP';
 
@@ -57,7 +57,7 @@ $string['section_comment_title'] = 'コメント';
 $string['rowhead'] = 'Setup of sections';
 
 $string['defoutlinename'] = 'Title of the course outline';
-$string['defoutlinename_help'] = 'Value of the title of the course outline in Section Matrix.';
+$string['defoutlinename_help'] = 'Value of the title of the course outline in SectionMatrix.';
 
 $string['defrow'] = 'Number of sections';
 $string['defrowunit'] = 'section';
@@ -83,6 +83,6 @@ $string['defrowname18'] = 'Title of the 18th section';
 $string['defrowname19'] = 'Title of the 19th section';
 $string['defrowname20'] = 'Title of the 20th section';
 $string['defrowname_help'] = 'The initial value of the Row Title of Section Matrix';
-$string['loadsyllabus'] = '{$a}のシラバス情報を読み込む';
+$string['loadsyllabus'] = 'シラバスシステムから情報を読み込む';
 $string['updatesections'] = 'セクション名を更新';
 
