@@ -83,3 +83,6 @@ $string['defrowname18'] = 'Title of the 18th section';
 $string['defrowname19'] = 'Title of the 19th section';
 $string['defrowname20'] = 'Title of the 20th section';
 $string['defrowname_help'] = 'The initial value of the Row Title of Section Matrix';
+$string['loadsyllabus'] = '{$a}のシラバス情報を読み込む';
+$string['updatesections'] = 'セクション名を更新';
+

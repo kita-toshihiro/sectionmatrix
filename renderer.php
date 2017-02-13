@@ -73,11 +73,11 @@ class mod_sectionmatrix_renderer extends plugin_renderer_base {
                     'mdl-align sectionmatrix-edit-button');
             $output .= $this->output->container(
                     $this->output->single_button(new moodle_url('/mod/sectionmatrix/load_syllabus.php',
-                    array('id' => $cm->id)), get_string('loadsyllabus')),
+                    array('id' => $cm->id)), get_string('loadsyllabus','sectionmatrix',$course_shortname)),
                     'mdl-align sectionmatrix-edit-button');
             $output .= $this->output->container(
                     $this->output->single_button(new moodle_url('/mod/sectionmatrix/update_sections.php',
-                    array('id' => $cm->id)), get_string('updatesections')),
+                    array('id' => $cm->id)), get_string('updatesections','sectionmatrix')),
                     'mdl-align sectionmatrix-edit-button');
         }
         return $output;
@@ -116,7 +116,7 @@ class mod_sectionmatrix_renderer extends plugin_renderer_base {
         } else {
             $result .= '<h3 class="main">'.$config->outlinename.'</h3>';
             $result .= '<div id="intro" class="box">'.$sectionmatrix->course_summary.'</div>';
-            $result .= '<h3 class="main">'.get_string('sectionhead', 'sectionmatrix').'</h3>';
+//            $result .= '<h3 class="main">'.get_string('sectionhead', 'sectionmatrix').'</h3>';
         }
         
         $result .= '<table class="f-sectionmatrix">';
