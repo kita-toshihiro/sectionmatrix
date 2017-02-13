@@ -1,0 +1,13 @@
+ table.f-sectionmatrix
+{
+  margin-left: 16% !important;
+}
+ table.f-sectionmatrix tr td div.fitemtitle
+{
+  visibility: hidden !important;
+}
+ table.f-sectionmatrix tr td div.felement
+{
+  margin-left: 1px !important;
+}
+
