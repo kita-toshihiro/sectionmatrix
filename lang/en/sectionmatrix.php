@@ -54,7 +54,7 @@ $string['sectionhead'] = 'Sections Information';
 $string['rowhead'] = 'Setup of sections';
 
 $string['defoutlinename'] = 'Title of the course outline';
-$string['defoutlinename_help'] = 'Value of the title of the course outline in Section Matrix.';
+$string['defoutlinename_help'] = 'Value of the title of the course outline in SectionMatrix.';
 
 $string['defrow'] = 'Number of sections';
 $string['defrowunit'] = 'section';
@@ -79,7 +79,7 @@ $string['defrowname17'] = 'Title of the 17th section';
 $string['defrowname18'] = 'Title of the 18th section';
 $string['defrowname19'] = 'Title of the 19th section';
 $string['defrowname20'] = 'Title of the 20th section';
-$string['defrowname_help'] = 'The initial value of the Row Title of Section Matrix';
+$string['defrowname_help'] = 'The initial value of the Row Title of SectionMatrix';
 
-$string['loadsyllabus'] = 'Load {$a} syllabus';
+$string['loadsyllabus'] = 'Load data from syllabus system';
 $string['updatesections'] = 'Update section names';
