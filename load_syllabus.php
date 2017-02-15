@@ -70,69 +70,18 @@ if ( $course_id_num != '' && $id == 0 ) {
 require_login($course, false, $cm);
 require_capability('mod/sectionmatrix:managefiles', $context);
 
-$courseid = $course->id;
-$nendo = "2016";
-$shozoku = "58";
-$jcode= "00601";
+sectionmatrix_loadsyllabus($sectionmatrix, $course);
 
-$data0 = json_decode(file_get_contents('http://syllabus.kumamoto-u.ac.jp/rest/auth/syllabusKakukaiView.json?locale=ja&nendo='.$nendo.'&jikanwari_shozokucd='.$shozoku.'&jikanwaricd='.$jcode));
-
-echo "<pre>";
-// var_dump($data0);
-
-
-foreach($data0 as $data){
-    echo $data->kai." ".$data->kakukai_theme." ".$data->kakukai_summary."\n";
-    $sectionid= $data->kai;
-    $sec_title= "sec_title".$sectionid;
-    $sec_comment= "sec_comment".$sectionid;
-    $sectionmatrix->$sec_title = $data->kakukai_theme;
-    $sectionmatrix->$sec_comment = $data->kakukai_summary;
-}
-$DB->update_record('sectionmatrix', $sectionmatrix);
-
-echo "</pre>";
-
-// コースページ上で、なるべくコンパクトな表示を
-
-/*
-
-!!!!!!!!!!!!!!!!!!!!
-
-
-$PAGE->set_url('/mod/sectionmatrix/edit.php', array('id' => $cm->id));
+$PAGE->set_url('/mod/sectionmatrix/load_syllabus.php', array('id' => $cm->id));
 $PAGE->set_title($course->shortname.': '.$sectionmatrix->name);
 $PAGE->set_heading($course->fullname);
 $PAGE->set_activity_record($sectionmatrix);
 
-$mform = new mod_sectionmatrix_edit_form(null, array('matrix'=>$sectionmatrix));
-if ($sectionmatrix->display == FOLDER_DISPLAY_INLINE) {
-    $redirecturl = course_get_url($cm->course, $cm->sectionnum);
-} else {
-    $redirecturl = new moodle_url('/mod/sectionmatrix/view.php', array('id' => $cm->id));
-}
-
-if ($mform->is_cancelled()) {
-    redirect($redirecturl);
-} else if ($formdata = $mform->get_data()) {
-    $DB->set_field('sectionmatrix', 'revision', $sectionmatrix->revision+1, array('id'=>$sectionmatrix->id));
-    $DB->set_field('sectionmatrix', 'course_summary', $formdata->course_summary, array('id'=>$sectionmatrix->id));
-    for ($i = 1; $i <= 20; $i++) {
-        $DB->set_field('sectionmatrix', 'sec_title'  .$i, $formdata->{'sec_title'  .$i}, array('id'=
-	>$sectionmatrix->id));
-        $DB->set_field('sectionmatrix', 'sec_comment'.$i, $formdata->{'sec_comment'.$i}, array('id'=>$sectionmatrix->id));
-    }
-    $DB->set_field('sectionmatrix', 'timemodified', time(), array('id'=>$user->id));
-
-    add_to_log($course->id, 'filematrix', 'edit', 'edit.php?id='.$cm->id, $filematrix->id, $cm->id);
-
-    redirect($redirecturl);
-}
+$redirecturl = new moodle_url('/mod/sectionmatrix/view.php', array('id' => $cm->id));
 
 echo $OUTPUT->header();
 echo $OUTPUT->box_start('generalbox sectionmatrix');
-$mform->display();
+//$mform->display();
 echo $OUTPUT->box_end();
+redirect($redirecturl,"Syllabus data loaded.",3);
 echo $OUTPUT->footer();
-
-*/

@@ -109,6 +109,12 @@ function sectionmatrix_add_instance($data, $mform) {
         file_save_draft_area_files($draftitemid, $context->id, 'mod_sectionmatrix', 'content', 0, array('subdirs'=>true));
     }
 
+    $sectionmatrix = $DB->get_record( 'sectionmatrix', array('id'=>$data->id) );
+    $course = $DB->get_record('course', array('id'=>$sectionmatrix->course));
+
+    sectionmatrix_loadsyllabus($sectionmatrix, $course);
+    sectionmatrix_updatesection($sectionmatrix, $course, false); // no updating if data exist
+
     return $data->id;
 }
 

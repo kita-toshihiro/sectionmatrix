@@ -28,6 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once("$CFG->dirroot/mod/sectionmatrix/lib.php");
 require_once("$CFG->libdir/filelib.php");
+require_once("$CFG->dirroot/course/lib.php");
 
 /**
  * File browsing support class
@@ -85,3 +86,57 @@ function sectionmatrix_get_row_name($config, $num) {
     return $result;
 }
 //-- add-e ----
+
+
+
+function sectionmatrix_loadsyllabus($sectionmatrix, $course){
+    global $DB;
+   
+    for($i=0; $i<2; $i++){
+        $a= explode('-',$course->idnumber);
+        $nendo =   $a[0];
+        $shozoku = $a[1];
+        $jcode=    $a[2];
+	// $nendo = "2016";  $shozoku = "58";  $jcode= "00601";
+        $data0 = json_decode(file_get_contents('http://syllabus.kumamoto-u.ac.jp/rest/auth/syllabusKakukaiView.json?locale=ja&nendo='.$nendo.'&jikanwari_shozokucd='.$shozoku.'&jikanwaricd='.$jcode));
+        if ( count($data0)>0 ){
+	    break;
+	}else{
+	    // for parent courses (with no syllabus data), find the child course 
+            $course_child = $DB->get_record("enrol", array('enrol'=>'meta','courseid'=>$course->id));
+            $course = $DB->get_record( "course", array('id'=>$course_child->customint1) );
+	}
+    }
+    // echo "<pre>"; var_dump($data0);
+    foreach($data0 as $data){
+      // echo $data->kai." ".$data->kakukai_theme." ".$data->kakukai_summary."\n";
+        $sectionid= $data->kai;
+        $sec_title= "sec_title".$sectionid;
+        $sec_comment= "sec_comment".$sectionid;
+        $sectionmatrix->$sec_title = $data->kakukai_theme;
+        $sectionmatrix->$sec_comment = $data->kakukai_summary;
+    }
+    $DB->update_record('sectionmatrix', $sectionmatrix);
+}
+
+function sectionmatrix_updatesection($sectionmatrix, $course, $forceupdate=null){
+    global $DB;
+
+    $courseid = $course->id;
+    if ( !$forceupdate ){
+      if ($DB->get_record_select("course_sections", '(course = '.$courseid.') AND ( (name <> "" AND name IS NOT NULL) OR (summary <> "" AND summary IS NOT NULL) )')){
+            return -1;
+	}
+    }
+    // TODO: コースのセクション数が少ない場合は増やす処理をここに
+
+    for($sectionid= 1; $sectionid<=20; $sectionid++){
+        $sec_title= "sec_title".$sectionid;
+        $sec_comment= "sec_comment".$sectionid;
+        if ( $section = $DB->get_record("course_sections", array("course"=>$courseid, "section"=>$sectionid)) ){
+            course_update_section($courseid, $section, array('name' => $sectionmatrix->$sec_title, 'summary' => $sectionmatrix->$sec_comment));
+        }
+    }
+}
+
+    

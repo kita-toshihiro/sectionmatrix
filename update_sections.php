@@ -70,70 +70,23 @@ if ( $course_id_num != '' && $id == 0 ) {
 require_login($course, false, $cm);
 require_capability('mod/sectionmatrix:managefiles', $context);
 
-$courseid = $course->id;
+$ret= sectionmatrix_updatesection($sectionmatrix, $course, true); // force update
 
-echo "<pre>";
-
-/*if ( $tmp = $DB->get_records("course_sections", array("course"=>$courseid)) ){
-    echo "exists.";
-    exit;
-}
-*/
-
-
-for($sectionid= 1; $sectionid<=15; $sectionid++){
-    $sec_title= "sec_title".$sectionid;
-    $sec_comment= "sec_comment".$sectionid;
-//    echo $i." ".$sectionmatrix->$sec_title." ".$sectionmatrix->$sec_comment."\n";
-    if ( $section = $DB->get_record("course_sections", array("course"=>$courseid, "section"=>$sectionid)) ){
-      if (!$section->name && !$section->summary){
-        course_update_section($courseid, $section, array('name' => $sectionmatrix->$sec_title, 'summary' => $sectionmatrix->$sec_comment));
-      }
-    }
-}
-
-echo "</pre>";
-
-// コースページ上で、なるべくコンパクトな表示を
-
-/*
-
-!!!!!!!!!!!!!!!!!!!!
-
-
-$PAGE->set_url('/mod/sectionmatrix/edit.php', array('id' => $cm->id));
+$PAGE->set_url('/mod/sectionmatrix/update_sections.php', array('id' => $cm->id));
 $PAGE->set_title($course->shortname.': '.$sectionmatrix->name);
 $PAGE->set_heading($course->fullname);
 $PAGE->set_activity_record($sectionmatrix);
 
-$mform = new mod_sectionmatrix_edit_form(null, array('matrix'=>$sectionmatrix));
-if ($sectionmatrix->display == FOLDER_DISPLAY_INLINE) {
-    $redirecturl = course_get_url($cm->course, $cm->sectionnum);
-} else {
-    $redirecturl = new moodle_url('/mod/sectionmatrix/view.php', array('id' => $cm->id));
-}
-
-if ($mform->is_cancelled()) {
-    redirect($redirecturl);
-} else if ($formdata = $mform->get_data()) {
-    $DB->set_field('sectionmatrix', 'revision', $sectionmatrix->revision+1, array('id'=>$sectionmatrix->id));
-    $DB->set_field('sectionmatrix', 'course_summary', $formdata->course_summary, array('id'=>$sectionmatrix->id));
-    for ($i = 1; $i <= 20; $i++) {
-        $DB->set_field('sectionmatrix', 'sec_title'  .$i, $formdata->{'sec_title'  .$i}, array('id'=
-	>$sectionmatrix->id));
-        $DB->set_field('sectionmatrix', 'sec_comment'.$i, $formdata->{'sec_comment'.$i}, array('id'=>$sectionmatrix->id));
-    }
-    $DB->set_field('sectionmatrix', 'timemodified', time(), array('id'=>$user->id));
-
-    add_to_log($course->id, 'filematrix', 'edit', 'edit.php?id='.$cm->id, $filematrix->id, $cm->id);
-
-    redirect($redirecturl);
-}
+$redirecturl = new moodle_url('/mod/sectionmatrix/view.php', array('id' => $cm->id));
 
 echo $OUTPUT->header();
 echo $OUTPUT->box_start('generalbox sectionmatrix');
-$mform->display();
+//$mform->display();
 echo $OUTPUT->box_end();
+if ($ret == -1){
+    $msg= "NOT updated (section data exist).";
+}else{
+    $msg= "Section names and summaries updated.";
+}
+redirect($redirecturl,$msg,3);
 echo $OUTPUT->footer();
-
-*/
